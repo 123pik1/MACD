@@ -1,6 +1,9 @@
 import pandas as pd
 import matplotlib.pyplot as plt
 
+#in csv file: further in file further in past, from the most recent
+
+
 def toFloats(array):
     float_array = []
     for i in array:
@@ -20,12 +23,15 @@ def subArrays(arr1, arr2):
         resultArr.append(arr1[i]-arr2[i])
     return resultArr
 
+
+
+
 def EMA_element_calc(data, N, nmb_of_curr_elem):
     alpha=alphaCalc(N)
     emaNumerator = data[nmb_of_curr_elem]
     emaDenominator =1
-    for j in range(1,nmb_of_curr_elem):
-        emaNumerator += ((1-alpha)**j)*data[nmb_of_curr_elem-j]
+    for j in range(1,N):
+        emaNumerator += ((1-alpha)**j)*data[nmb_of_curr_elem+j]
         emaDenominator += (1-alpha)**j
     return emaNumerator/emaDenominator
 
@@ -39,6 +45,9 @@ def EMA_calc(data, N):
             emaElem = EMA_element_calc(data, N, N)
         EMAs_array.append(emaElem)
     return EMAs_array
+
+
+
 
 def intersectionPoints(MACD, SIGNAL):
     intersection = []
@@ -57,7 +66,7 @@ def intersectionPoints(MACD, SIGNAL):
 
 
 data_from_csv = pd.read_csv('Data.csv')
-data_for_calc = data_from_csv['Zamkniecie']
+data_for_calc = data_from_csv['Close']
 # data_for_calc = toFloats(data_for_calc)
 
 EMA12 = EMA_calc(data_for_calc, 12)
