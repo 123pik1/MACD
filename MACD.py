@@ -39,6 +39,21 @@ def EMA_calc(data, N):
         EMAs_array.append(emaElem)
     return EMAs_array
 
+def intersectionPoints(MACD, SIGNAL):
+    intersection = []
+    buy = []
+    sell = []
+    for i in range(1, len(MACD)): #skip first because there is no way to analyse if it would be buy or sell
+        if MACD[i]==SIGNAL[i]:
+            intersection.append(i) #add id in MACD array to intersection array
+            if MACD[i-1]>SIGNAL[i-1]:
+                sell.append(i)
+            else:
+                buy.append(i)       
+    return intersection, buy, sell
+
+
+
 
 data_from_csv = pd.read_csv('Bitcoin-Historical-Data.csv')
 data_for_calc = data_from_csv['Price']
@@ -48,3 +63,4 @@ EMA12 = EMA_calc(data_for_calc, 12)
 EMA26 = EMA_calc(data_for_calc,26)
 MACD = subArrays(EMA12,EMA26)
 SIGNAL = EMA_calc(MACD,9)
+
