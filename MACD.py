@@ -1,4 +1,5 @@
 import pandas as pd
+import matplotlib.pyplot as plt
 
 def toFloats(array):
     float_array = []
@@ -64,3 +65,14 @@ EMA26 = EMA_calc(data_for_calc,26)
 MACD = subArrays(EMA12,EMA26)
 SIGNAL = EMA_calc(MACD,9)
 
+
+intersectPoints, buyArray, sellArray = intersectionPoints(MACD, SIGNAL)
+
+plt.figure(figsize=(14,7))
+plt.plot(MACD, label='MACD', color='blue')
+plt.plot(SIGNAL, label='SIGNAL', color='red')
+plt.legend(loc='upper left')
+plt.title('MACD and SIGNAL Line')
+plt.xlabel('Time')
+plt.ylabel('Value')
+plt.show()
