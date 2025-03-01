@@ -56,9 +56,9 @@ def intersectionPoints(MACD, SIGNAL):
 
 
 
-data_from_csv = pd.read_csv('Bitcoin-Historical-Data.csv')
-data_for_calc = data_from_csv['Price']
-data_for_calc = toFloats(data_for_calc)
+data_from_csv = pd.read_csv('Data.csv')
+data_for_calc = data_from_csv['Zamkniecie']
+# data_for_calc = toFloats(data_for_calc)
 
 EMA12 = EMA_calc(data_for_calc, 12)
 EMA26 = EMA_calc(data_for_calc,26)
