@@ -3,23 +3,77 @@
 \usepackage[T1]{fontenc}
 
 \title{Sprawozdanie z projektu na temat wskaźnika giełdowego MACD}
-\author{Piotr Kaczorowski}
+\author{Piotr Kaczorowski 197736}
 \date{\today}
 
 \begin{document}
 
 \maketitle
 
-\section{Wstęp}
+\section{Wstęp teoretyczny}
+
+Wskaźnik MACD został opracowany przez Geralda Appela w latach\
+70-tych XX wieku. W celu ukazywania zmian w trendach cenowych akcji\
+na giełdzie. Może być wykorzystywany również przy analizie innych\
+instrumentów finansowych, takich jak kryptowaluty czy surowce.\
+Sam MACD jest różnicą dwóch średnich kroczących (EMA - \
+Exponential Moving Average), zwykle\
+będących średnimi z 12 (EMA$_{12}$) i 26 ostatnich okresów (EMA$_{26}$). \
+W celu wyznaczenia sygnałów kupna i sprzedaży stosuje się\
+linię sygnałową, będącą średnią kroczącą (zwykle z 9 okresów) MACD.\
+Przecięcia linii MACD z liniami sygnałowymi na wykresie są interpretowane\
+jako sygnały kupna i sprzedaży.
+
+Celem niniejszego projektu jest implementacja wskaźnika MACD w języku\
+Python, a następnie przetestownanie go na na przykładowych danych\
+giełdowych oraz zaprezentowanie wyników w formie wykresów jak również\
+opracowania wniosków na ich podstawie. Podczas implementowania wskaźnika\
+MACD została wykorzystana biblioteka Pandas do wczytania odpowiednich danych\
+z pliku CSV zawierającego dane giełdowe oraz biblioteka Matplotlib do\
+wygenerowania wykresów na podstawie otrzymanych wyników i danych wejściowych.\
+Kod źródłowy projektu jest zapisany w pliku \emph{MACD.py} (a do debugowania\
+i testowania kodu został wykorzystany plik \emph{debug MACD.ipynb})
 
 
+\section{Dane przykładowe i implementacja}
+
+Dane przykładowe zostały pobrane z serwisu stooq.pl w formie pliku CSV.\
+Zawierają one dane giełdowe na temat wartości WIG 20 w okresie od 16.04.2014\
+do 16.10.2018. Dane te zostały wczytane do programu za pomocą biblioteki\
+Pandas, a następnie zostały wydzielone interesujące nas dane,\
+które są cenami zamknięcia akcji. Dane te zostały przekazane do funkcji\
+implementującej wyliczanie wskaźnika EMA. Funkcja ta implementuje\
+wyliczanie średniej kroczącej wykorzystując wzór:
+\begin{equation}
+    EMA_n = \frac{p_0+(1-\alpha)*p_1+(1-\alpha)^2*p_2+...+(1-\alpha)^n*p_n}{1+(1-\alpha)+(1-\alpha)^2+...+(1-\alpha)^n}
+\end{equation}
+
+p$_{0}$,p$_{1}$ ... p$_{n}$ - kolejne wartości z których liczona jest średnia
+
+${\alpha}$ = ${\frac{2}{n+1}}$%, jest to wyliczane w funkcji \emph{alpha_calc}      
+
+${EMA_n}$ - średnia krocząca z n elementów, im starszy tym ma mniejsze znaczenie
+\newline
+\newline
+Z implementacji powyższego wzoru (1) wyliczane są tablice zawierające ${EMA_{12}}$\
+i ${EMA_{26}}$. Następnie jest obliczany wskaźnik MACD z obu powyższych wyników odejmując od siebie\
+odpowiadające wartości Po obliczeniu wskaźnika MACD zostaje wyliczenie wartości linii\
+SIGNAL, obliczona ona jest za pomocą funkcji implementującej ${EMA_n}$ wywołanej z\
+innymi parametrami - jako zbiór danych zostaje przesłany zbiór wartości MACD\
+a \emph{n} w tym wywołaniu jest ustawiane na 9.
+\newline
+Kolejnym krokiem jest wyznaczenie punktów kupna i sprzedaży, to zadanie wykonuje\
+funkcja \emph{intersectionPoints} zwracająca kolejno: listę indeksów punktów przecięcia\
+listę tupli kupna zawierającą indeks oraz wartość MACD w tym indeksie\
+(różnica pomiędzy MACD i SIGNAL jest pomijalna albo niemożliwa\
+do usunięcia w implementacji - bo oba wskaźniki muszą mieć wartość identyczną, jednak\
+w rzeczywistych warunkach zakresu wartości niekoniecznie jest to możliwe oraz\
+przecięcia mogą występować pomiędzy dwoma polami wyrażonymi w MACD i SIGNAL),\
+ostatnia jest lista sprzedaży, mająca identyczną strukturę do listy kupna.
 
 
-\section{Methods}
-Details about the methods used.
+\section{Rezultat na przykładowych danych}
 
-\section{Results}
-Results of the study.
 
 \section{Conclusion}
 Conclusion of the document.
