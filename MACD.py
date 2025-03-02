@@ -47,7 +47,11 @@ def intersectionPoints(MACD, SIGNAL): #TODO correct to not equalizing
             intersection.append(i)
             buy.append((i,MACD[i]))       
     return intersection, buy, sell
-
+def getArrayOfIndexes(entry, indexArr):
+    result = []
+    for i in indexArr:
+        result.append(entry[i])
+    return result
 data = pd.read_csv('Data.csv')
 data_from_csv = pd.read_csv('Data.csv')
 data_for_calc = data_from_csv['Close']
@@ -82,7 +86,16 @@ plt.show()
 
 plt.figure(figsize=(30,7))
 plt.plot(data_for_calc,label='WIG20 value', color='green')
+
+buyPoints = [point[0] for point in buyArray]
+buyValues = getArrayOfIndexes(data_for_calc,buyPoints) 
+sellPoints = [point[0] for point in sellArray]
+sellValues = getArrayOfIndexes(data_for_calc, sellPoints)
+
+plt.scatter(buyPoints, buyValues, color='blue', marker='+', label='Buy')
+plt.scatter(sellPoints, sellValues, color='red', marker='v', label='Sell')
 plt.legend(loc='upper right')
+
 plt.title('WIG20 value')
 plt.xlabel('Time')
 plt.ylabel('Value')
