@@ -100,3 +100,8 @@ plt.title('WIG20 value')
 plt.xlabel('Time')
 plt.ylabel('Value')
 plt.show()
+
+
+#TODO example buy-sell transactions and plots for them + analise
+#TODO simulation of selling and buying
+#TODO conclusion
