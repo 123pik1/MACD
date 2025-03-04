@@ -290,7 +290,7 @@ isSelling =True #is next operation is operation of selling?
 
 ops =("Sell", "Buy")
 recordOfOperations = [{"PLN":PLN, "Stocks":stocks, "Operation":"Start",\
-                       "Kapitał":data_for_calc[simulationDays-1]*stocks+PLN}]
+                       "Capital":data_for_calc[simulationDays-1]*stocks+PLN}]
 
 
 
@@ -303,7 +303,7 @@ for i in range(simulationDays-1, 0, -1):
         PLN=round(PLN,2)
         recordOfOperations.append(\
             {"PLN":round(PLN,2), "Stocks":stocks, "Operation":ops[0],\
-             "Kapitał":round(valueOfAction*stocks+PLN,2)})
+             "Capital":round(valueOfAction*stocks+PLN,2)})
     elif not isSelling and i in buyPoints:
         isSelling = True
         stocks+=int(PLN//valueOfAction)
@@ -312,7 +312,7 @@ for i in range(simulationDays-1, 0, -1):
         PLN=round(PLN,2)
         recordOfOperations.append(\
             {"PLN":round(PLN,2), "Stocks":stocks, "Operation":ops[1],\
-             "Kapitał":round(valueOfAction*stocks+PLN,2)})
+             "Capital":round(valueOfAction*stocks+PLN,2)})
 
 
 recordInPandas = pd.DataFrame(recordOfOperations)
@@ -320,15 +320,23 @@ recordInPandas = pd.DataFrame(recordOfOperations)
 
 
 recordInPandas.to_csv('simulation_result.csv', index=False)
+latex_table = recordInPandas.to_latex(index=False,longtable=True, float_format=lambda x: f'{x:.2f}'.rstrip('0').rstrip('.'))
+
+with open('record_of_operations_table.tex', 'w') as f:
+    f.write(latex_table)
+
+
+
 
 
 plt.figure(figsize=sizeOfPlot)
 
 
 
-plt.plot( recordInPandas.index, recordInPandas["Kapitał"], label='Kapitał w milionach', color='blue')
+plt.plot( recordInPandas.index, recordInPandas["Capital"], label='Capital in millions', color='blue')
 plt.legend(loc='upper right')
 plt.title('Capital over Time')
 plt.xlabel('Days from the start of simulation')
 plt.ylabel('Capital')
 plt.show()
+
