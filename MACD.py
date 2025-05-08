@@ -21,13 +21,11 @@ def subArrays(arr1, arr2):
 def EMA_element_calc(data, N, id_of_curr_elem):
     """
     Calculates EMA of N elements starting from data[id_of_curr_elem], goes backwards
-    
     Arguments:
     data - input array
     N - number of elements
     id_of_curr_elem - id of start in input array
     """
-    
     OneMinusAlpha=1-alphaCalc(N)
     emaNumerator = data[id_of_curr_elem]
     emaDenominator =1
@@ -47,20 +45,19 @@ def toFloats(array):
         item = float(i.replace(',',''))
         float_array.append(item)
     return float_array
-def intersectionPoints(MACD, SIGNAL): 
+def intersectionPoints(MACD, SIGNAL):
     """Finds points of intersection and return three array: intersection, buy and sell
     buy and sell are lists of tuples which containt (id, val)"""
     intersection = []
     buy = []
     sell = []
     for i in range(1, len(MACD)-1): #skip first because there is no way to analyse if it would be buy or sell
-       
         if MACD[i-1] < SIGNAL[i-1] and MACD[i] > SIGNAL[i]:
             intersection.append(i) #add id in MACD array to intersection array
             buy.append((i,MACD[i]))
         elif MACD[i-1] > SIGNAL[i-1] and MACD[i] < SIGNAL[i]:
             intersection.append(i)
-            sell.append((i,MACD[i]))       
+            sell.append((i,MACD[i]))
     return intersection, buy, sell
 def extractFromTuple(tupleArr, index):
     arrRes = []
@@ -88,7 +85,7 @@ SIGNAL = EMA_calc(MACD,9)
 intersectPoints, buyArray, sellArray = intersectionPoints(MACD, SIGNAL)
 
 plt.figure(figsize=sizeOfPlot)
-plt.plot(dates,MACD, label='MACD', color='blue') 
+plt.plot(dates,MACD, label='MACD', color='blue')
 plt.plot(dates,SIGNAL, label='SIGNAL', color='orange')
 
 buyPoints = getArrayOfIndexes(dates, extractFromTuple(buyArray,0))
@@ -109,7 +106,7 @@ plt.figure(figsize=sizeOfPlot)
 plt.plot(dates,data_for_calc,label='WIG20 value', color='blue')
 
 buyPoints = [point[0] for point in buyArray]
-buyValues = getArrayOfIndexes(data_for_calc,buyPoints) 
+buyValues = getArrayOfIndexes(data_for_calc,buyPoints)
 buyPoints = getArrayOfIndexes(dates, extractFromTuple(buyArray,0))
 sellPoints = [point[0] for point in sellArray]
 sellValues = getArrayOfIndexes(data_for_calc, sellPoints)
@@ -128,7 +125,7 @@ plt.show()
 #plot MACD and SIGNAL for 3.2.1
 
 plt.figure(figsize=sizeOfPlot)
-plt.plot(dates,MACD, label='MACD', color='blue') 
+plt.plot(dates,MACD, label='MACD', color='blue')
 plt.plot(dates,SIGNAL, label='SIGNAL', color='orange')
 
 plt.xlim(pd.to_datetime('2017-01-01'),pd.to_datetime('2018-01-01'))
@@ -167,7 +164,7 @@ plt.plot(dates,data_for_calc,label='WIG20 value', color='blue')
 plt.xlim(pd.to_datetime('2017-01-01'),pd.to_datetime('2018-01-01'))
 
 buyPoints = [point[0] for point in buyArray]
-buyValues = getArrayOfIndexes(data_for_calc,buyPoints) 
+buyValues = getArrayOfIndexes(data_for_calc,buyPoints)
 buyPoints = getArrayOfIndexes(dates, extractFromTuple(buyArray,0))
 buyPoints = buyPoints[checkedIndex]
 buyValues = buyValues[checkedIndex]
@@ -204,7 +201,7 @@ print("selling: "+str(sellPoints))
 #plot MACD and SIGNAL for 3.2.2
 
 plt.figure(figsize=sizeOfPlot)
-plt.plot(dates,MACD, label='MACD', color='blue') 
+plt.plot(dates,MACD, label='MACD', color='blue')
 plt.plot(dates,SIGNAL, label='SIGNAL', color='orange')
 
 plt.xlim(pd.to_datetime('2017-01-01'),pd.to_datetime('2018-01-01'))
@@ -244,7 +241,7 @@ plt.plot(dates,data_for_calc,label='WIG20 value', color='blue')
 plt.xlim(pd.to_datetime('2017-01-01'),pd.to_datetime('2018-01-01'))
 
 buyPoints = [point[0] for point in buyArray]
-buyValues = getArrayOfIndexes(data_for_calc,buyPoints) 
+buyValues = getArrayOfIndexes(data_for_calc,buyPoints)
 buyPoints = getArrayOfIndexes(dates, extractFromTuple(buyArray,0))
 buyPoints = buyPoints[checkedIndex1]
 buyValues = buyValues[checkedIndex1]
@@ -285,7 +282,7 @@ sellPoints = [points[0] for points in sellArray]
 buyPoints = [points[0] for points in buyArray]
 
 PLN = 0 #starting value of account
-stocks = 1000 #number of start stock actions 
+stocks = 1000 #number of start stock actions
 isSelling =True #is next operation is operation of selling?
 
 ops =("Sell", "Buy")
@@ -307,7 +304,7 @@ for i in range(simulationDays-1, 0, -1):
     elif not isSelling and i in buyPoints:
         isSelling = True
         stocks+=int(PLN//valueOfAction)
-        PLN-=stocks*valueOfAction #może nie być możliwe kupienie 
+        PLN-=stocks*valueOfAction #może nie być możliwe kupienie
         #samych pełnych akcji
         PLN=round(PLN,2)
         recordOfOperations.append(\
